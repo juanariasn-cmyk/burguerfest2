@@ -1,3 +1,4 @@
+// CONFIGURACIÓN FIREBASE
 const firebaseConfig = {
     apiKey: "AIzaSyCwcCFXtJqWL55ExHFDti3G3Ri18mvNJuU",
     authDomain: "burguerfest.firebaseapp.com",
@@ -28,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('burger-img').src = datosRest.burger;
     if (datosRest.campeon) {
         document.getElementById('champion-badge').style.display = 'inline-flex';
-        document.getElementById('rest-name').classList.add('champion-name');
+        document.getElementById('rest-name').style.color = 'var(--gold)';
     }
 });
 
@@ -36,46 +37,37 @@ function updateProgress(val) {
     document.getElementById("myBar").style.width = val + "%";
 }
 
-function playSound() {
-    const audio = document.getElementById('click-sound');
-    if(audio) audio.play().catch(() => {});
-}
-
 async function validarIngreso() {
-    playSound();
     const code = document.getElementById('code').value.trim().toUpperCase();
     const phone = document.getElementById('phone').value.trim();
 
     if(phone.length < 7 || code.length < 6) {
-        alert("⚠️ Ingresa datos válidos.");
+        alert("⚠️ Completa los datos correctamente.");
         return;
     }
 
     try {
         const snapshot = await database.ref('codigos_validos/' + code).once('value');
         if (snapshot.val() === "disponible") {
-            updateProgress(75);
+            updateProgress(80);
             document.getElementById('login-section').style.display = 'none';
             document.getElementById('vote-section').style.display = 'block';
         } else {
-            alert("❌ Código inválido o ya usado.");
+            alert("❌ Código inválido.");
         }
-    } catch (e) { alert("📡 Error de red."); }
+    } catch (e) { alert("📡 Error de conexión."); }
 }
 
 let ratingActual = 0;
 function setRating(n) {
-    playSound();
     ratingActual = n;
     const stars = document.querySelectorAll('.stars span');
     stars.forEach((s, i) => s.classList.toggle('active', i < n));
-    document.getElementById('rating-label').innerText = ["Mala", "Regular", "Buena", "Muy Buena", "¡LA MEJOR! 🏆"][n-1];
     document.getElementById('btn-votar').disabled = false;
-    updateProgress(90);
+    updateProgress(95);
 }
 
 function enviarVoto() {
-    playSound();
     const phone = document.getElementById('phone').value.trim();
     const code = document.getElementById('code').value.trim().toUpperCase();
     const btn = document.getElementById('btn-votar');
@@ -89,26 +81,33 @@ function enviarVoto() {
         fecha: new Date().toLocaleString()
     }).then(() => {
         database.ref('codigos_validos/' + code).set("usado");
-        updateProgress(100);
+        lanzarConfeti();
         mostrarExito();
     });
 }
 
+function lanzarConfeti() {
+    confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#E67E22', '#FFD700', '#ffffff']
+    });
+}
+
 function mostrarExito() {
+    updateProgress(100);
     const card = document.getElementById('main-card');
     card.innerHTML = `
-        <div style="padding: 40px 10px; animation: fadeInUp 0.5s ease;">
-            <div style="font-size: 60px;">✅</div>
-            <h2 style="color: var(--gold); margin: 15px 0;">¡VOTO EXITOSO!</h2>
-            <p style="color: #ccc; font-size: 14px;">Gracias por ayudarnos a encontrar la mejor burger de 2026.</p>
-            <div style="margin-top: 30px; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px;">
-                <p style="font-size: 12px; color: var(--gold); font-weight: bold; margin-bottom: 10px;">¡COMPARTE TU VOTO!</p>
-                <a href="https://wa.me/?text=¡Acabo de calificar a ${datosRest.nombre} en el Burguer Fest 2026! 🍔🔥" 
-                   style="display: block; background: #25D366; color: white; padding: 15px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 14px;">
-                   Compartir en WhatsApp
-                </a>
-            </div>
-            <button onclick="location.reload()" style="margin-top: 20px; background: none; border: none; color: #555; cursor: pointer; font-size: 12px;">Volver al inicio</button>
+        <div class="fade-in" style="padding: 30px 0;">
+            <div style="font-size: 70px; margin-bottom: 20px;">🎖️</div>
+            <h2 style="color: var(--gold); font-size: 28px;">¡GRACIAS JURADO!</h2>
+            <p style="color: #888; margin-bottom: 30px;">Tu voto ha sido procesado con éxito.</p>
+            <a href="https://wa.me/?text=¡Acabo de calificar a ${datosRest.nombre} en el Burguer Fest 2026! 🍔" 
+               style="display: block; background: #25D366; color: white; padding: 20px; border-radius: 20px; text-decoration: none; font-weight: 800;">
+               COMPARTIR EN WHATSAPP
+            </a>
+            <button onclick="location.reload()" style="margin-top: 25px; background: transparent; border: none; color: #444; font-weight: 700; cursor: pointer;">Cerrar sesión</button>
         </div>
     `;
 }
