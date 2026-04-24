@@ -82,3 +82,28 @@ function enviarVoto() {
         window.location.href = "gracias.html"; // Opcional: crear una página de agradecimiento
     });
 }
+
+// Efecto visual al escribir el código
+document.getElementById('code').addEventListener('input', function(e) {
+    this.value = this.value.toUpperCase();
+    if(this.value.length === 6) {
+        this.style.borderColor = "#E67E22";
+    }
+});
+
+// Mejora en la función setRating para efectos visuales
+function setRating(n) {
+    ratingActual = n;
+    const stars = document.querySelectorAll('.stars span');
+    stars.forEach((s, i) => {
+        if (i < n) {
+            s.innerText = '⭐';
+            s.style.textShadow = "0 0 15px #E67E22";
+        } else {
+            s.innerText = '☆';
+            s.style.textShadow = "none";
+        }
+    });
+    document.getElementById('btn-votar').disabled = false;
+    document.getElementById('rating-text').innerText = "¡Excelente elección!";
+}
