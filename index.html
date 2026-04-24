@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Burguer Fest 2026 - Votación</title>
+    <title>Burguer Fest 2026 - Jurado Oficial</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -16,22 +16,26 @@
         <div class="glow-spot"></div>
         
         <div class="container">
+            <div class="progress-container">
+                <div class="progress-bar" id="myBar"></div>
+            </div>
+
             <header class="hero-header">
                 <div class="logo-container">
-                    <img src="Logo.png" alt="Burguer Fest" class="main-logo-img">
+                    <img src="Logo.png" alt="Burguer Fest" class="main-logo-img" onerror="this.src='https://via.placeholder.com/150?text=Burguer+Fest'">
                 </div>
                 <div id="champion-badge" class="champion-badge" style="display: none;">
                     <span class="crown">👑</span>
                     <span class="badge-text">ACTUAL CAMPEÓN</span>
                 </div>
                 <div class="status-bar">
-                    <span class="live-dot"></span> EN VIVO: SELECCIÓN 2026
+                    <span class="live-dot"></span> JURADO EN VIVO
                 </div>
             </header>
 
-            <section class="glass-card">
+            <section class="glass-card" id="main-card">
                 <div class="rest-context">
-                    <img id="rest-logo" src="" alt="Restaurante" class="mini-avatar">
+                    <img id="rest-logo" src="" alt="Restaurante" class="mini-avatar" onerror="this.src='Logo.png'">
                     <div class="name-box">
                         <span class="voter-label">ESTÁS CALIFICANDO A:</span>
                         <h2 id="rest-name">Cargando...</h2>
@@ -40,25 +44,25 @@
 
                 <div id="login-section">
                     <div class="welcome-text">
-                        <h3>¡Bienvenido al Fest!</h3>
-                        <p>Tu voto elige a la mejor hamburguesa local.</p>
+                        <h3>¡Hola, Foodie!</h3>
+                        <p>Ingresa los datos de tu ticket para continuar.</p>
                     </div>
 
                     <div class="input-wrapper">
                         <div class="input-field">
-                            <input type="tel" id="phone" required placeholder=" ">
-                            <label>WhatsApp / Celular</label>
+                            <input type="tel" id="phone" required placeholder=" " oninput="updateProgress(25)">
+                            <label>Celular / WhatsApp</label>
                             <span class="focus-border"></span>
                         </div>
                         <div class="input-field">
-                            <input type="text" id="code" required maxlength="6" placeholder=" ">
-                            <label>Código del Ticket</label>
+                            <input type="text" id="code" required maxlength="6" placeholder=" " oninput="this.value = this.value.toUpperCase(); updateProgress(50)">
+                            <label>Código de 6 dígitos</label>
                             <span class="focus-border"></span>
                         </div>
                     </div>
 
                     <button onclick="validarIngreso()" class="btn-shine">
-                        <span>ACCEDER A VOTAR</span>
+                        <span>SIGUIENTE PASO</span>
                     </button>
                 </div>
 
@@ -81,13 +85,13 @@
                     </div>
 
                     <button id="btn-votar" onclick="enviarVoto()" class="btn-shine gold" disabled>
-                        <span>ENVIAR MI CALIFICACIÓN</span>
+                        <span>FINALIZAR Y COMPARTIR</span>
                     </button>
                 </div>
             </section>
 
             <footer class="legal-footer">
-                <p>Burguer Fest Local © 2026</p>
+                <p>Verificado por Burguer Fest Local © 2026</p>
             </footer>
         </div>
     </div>
