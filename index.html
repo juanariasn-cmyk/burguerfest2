@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burger Fest 2026 - Votación</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="app">
+        <header>
+            <h1 class="fest-logo">BURGER FEST</h1>
+            <div id="restaurant-info">
+                <img src="" id="rest-logo" alt="Logo">
+                <h2 id="rest-name">Cargando...</h2>
+                <div id="badge-campeon" style="display: none; color: #ffbc0d; font-weight: bold; margin-bottom: 10px;">
+                    🏆 ACTUAL CAMPEÓN
+                </div>
+            </div>
+        </header>
+
+        <hr class="separator">
+
+        <section id="login-section">
+            <p>Ingresa tus datos para votar:</p>
+            <div class="input-group">
+                <label>Número de Celular</label>
+                <input type="tel" id="phone" placeholder="Ej: 3001234567">
+            </div>
+            <div class="input-group">
+                <label>Código de Votación</label>
+                <input type="text" id="code" placeholder="Ingresa tu código único">
+            </div>
+            <button class="btn-main" onclick="validarIngreso()">INGRESAR A VOTAR</button>
+        </section>
+
+        <section id="vote-section" style="display: none;">
+            <h3>¿Qué tal estuvo la burger?</h3>
+            <div class="burger-container">
+                <img src="" id="burger-img" alt="Hamburguesa">
+            </div>
+            
+            <div class="stars">
+                <span onclick="setRating(1)">☆</span>
+                <span onclick="setRating(2)">☆</span>
+                <span onclick="setRating(3)">☆</span>
+                <span onclick="setRating(4)">☆</span>
+                <span onclick="setRating(5)">☆</span>
+            </div>
+            <p id="rating-text">Selecciona una calificación</p>
+            <button class="btn-main" onclick="enviarVoto()" id="btn-votar" disabled>ENVIAR MI VOTO</button>
+        </section>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
