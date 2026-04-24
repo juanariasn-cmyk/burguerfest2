@@ -3,42 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burger Fest 2026 - Votación</title>
+    <title>Burguer Fest 2026 - Votación Oficial</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
 <body>
 
-    <div id="app">
-        <header>
-            <h1 class="fest-logo">BURGER FEST</h1>
-            <div id="restaurant-info">
-                <img src="" id="rest-logo" alt="Logo">
+    <div class="container">
+        <header class="main-header">
+            <img src="Logo.png" alt="Burguer Fest Local" class="fest-logo">
+            <div class="divider"></div>
+            <div class="rest-badge">
+                <img id="rest-logo" src="" alt="Logo" class="logo-min">
                 <h2 id="rest-name">Cargando...</h2>
-                <div id="badge-campeon" style="display: none; color: #ffbc0d; font-weight: bold; margin-bottom: 10px;">
-                    🏆 ACTUAL CAMPEÓN
-                </div>
             </div>
         </header>
 
         <hr class="separator">
 
-        <section id="login-section">
-            <p>Ingresa tus datos para votar:</p>
+        <div id="login-section" class="card">
+            <h3>🔑 Ingresa tus datos</h3>
+            <p class="subtitle">Escribe tu celular y el código impreso en tu recibo para validar tu voto.</p>
             <div class="input-group">
                 <label>Número de Celular</label>
-                <input type="tel" id="phone" placeholder="Ej: 3001234567">
+                <input type="tel" id="phone" placeholder="Ej: 3001234567" maxlength="10">
             </div>
             <div class="input-group">
-                <label>Código de Votación</label>
-                <input type="text" id="code" placeholder="Ingresa tu código único">
+                <label>Código Único (6 caracteres)</label>
+                <input type="text" id="code" placeholder="Ingresa tu código" maxlength="6">
             </div>
-            <button class="btn-main" onclick="validarIngreso()">INGRESAR A VOTAR</button>
-        </section>
+            <button onclick="validarIngreso()" class="btn-main">CONTINUAR</button>
+        </div>
 
-        <section id="vote-section" style="display: none;">
-            <h3>¿Qué tal estuvo la burger?</h3>
-            <div class="burger-container">
-                <img src="" id="burger-img" alt="Hamburguesa">
+        <div id="vote-section" class="card" style="display: none;">
+            <h3>🍔 Califica la Burger</h3>
+            <p class="subtitle">¿Qué te pareció la hamburguesa de este restaurante?</p>
+            
+            <div class="burger-wrapper">
+                <img id="burger-img" src="" alt="Hamburguesa" class="burger-photo">
             </div>
             
             <div class="stars">
@@ -49,12 +52,11 @@
                 <span onclick="setRating(5)">☆</span>
             </div>
             <p id="rating-text">Selecciona una calificación</p>
-            <button class="btn-main" onclick="enviarVoto()" id="btn-votar" disabled>ENVIAR MI VOTO</button>
-        </section>
+            
+            <button id="btn-votar" onclick="enviarVoto()" class="btn-main" disabled>ENVIAR MI VOTO</button>
+        </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
