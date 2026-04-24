@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Burguer Fest 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Burguer Fest 2026 - Votación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -20,6 +20,10 @@
                 <div class="logo-container">
                     <img src="Logo.png" alt="Burguer Fest" class="main-logo-img">
                 </div>
+                <div id="champion-badge" class="champion-badge" style="display: none;">
+                    <span class="crown">👑</span>
+                    <span class="badge-text">ACTUAL CAMPEÓN</span>
+                </div>
                 <div class="status-bar">
                     <span class="live-dot"></span> EN VIVO: SELECCIÓN 2026
                 </div>
@@ -34,10 +38,10 @@
                     </div>
                 </div>
 
-                <div id="login-section" class="content-block">
+                <div id="login-section">
                     <div class="welcome-text">
-                        <h3>¡Hola, Foodie!</h3>
-                        <p>Tu opinión define quién se lleva la corona este año.</p>
+                        <h3>¡Bienvenido al Fest!</h3>
+                        <p>Tu voto elige a la mejor hamburguesa local.</p>
                     </div>
 
                     <div class="input-wrapper">
@@ -54,24 +58,24 @@
                     </div>
 
                     <button onclick="validarIngreso()" class="btn-shine">
-                        <span>ACCEDER AL JURADO</span>
+                        <span>ACCEDER A VOTAR</span>
                     </button>
                 </div>
 
-                <div id="vote-section" class="content-block" style="display: none;">
+                <div id="vote-section" style="display: none;">
                     <div class="image-frame">
                         <img id="burger-img" src="" alt="Hamburguesa" class="hero-burger">
                         <div class="img-overlay"></div>
                     </div>
 
                     <div class="rating-engine">
-                        <p class="rating-hint">¿Qué puntuación le das al sabor?</p>
+                        <p class="rating-hint">¿Qué tal estuvo el sabor?</p>
                         <div class="stars" id="star-box">
-                            <span onclick="setRating(1)" data-val="1">★</span>
-                            <span onclick="setRating(2)" data-val="2">★</span>
-                            <span onclick="setRating(3)" data-val="3">★</span>
-                            <span onclick="setRating(4)" data-val="4">★</span>
-                            <span onclick="setRating(5)" data-val="5">★</span>
+                            <span onclick="setRating(1)">★</span>
+                            <span onclick="setRating(2)">★</span>
+                            <span onclick="setRating(3)">★</span>
+                            <span onclick="setRating(4)">★</span>
+                            <span onclick="setRating(5)">★</span>
                         </div>
                         <div id="rating-label">Toca una estrella</div>
                     </div>
@@ -83,8 +87,7 @@
             </section>
 
             <footer class="legal-footer">
-                <p>Desarrollado para Burguer Fest Local</p>
-                <div class="social-links">● ● ●</div>
+                <p>Burguer Fest Local © 2026</p>
             </footer>
         </div>
     </div>
