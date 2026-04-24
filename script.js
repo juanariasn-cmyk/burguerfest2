@@ -1,157 +1,92 @@
-// 1. CONFIGURACIÓN DE FIREBASE (Verificada)
 const firebaseConfig = {
     apiKey: "AIzaSyCwcCFXtJqWL55ExHFDti3G3Ri18mvNJuU",
     authDomain: "burguerfest.firebaseapp.com",
     projectId: "burguerfest",
-    storageBucket: "burguerfest.firebasestorage.app",
-    messagingSenderId: "248356951065",
-    appId: "1:248356951065:web:23cae0d273c3ec27a28688",
-    measurementId: "G-H183GF6X4Q",
     databaseURL: "https://burguerfest-default-rtdb.firebaseio.com/"
 };
 
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// 2. BASE DE DATOS DE RESTAURANTES (Asegúrate de tener las carpetas logos/ y burgers/)
+// Imágenes temporales de la web (Unsplash)
 const restaurantes = {
-    "1": { nombre: "LA OBSESION", logo: "logos/1.png", burger: "burgers/1.jpg" },
-    "2": { nombre: "MISTER HONGO", logo: "logos/2.png", burger: "burgers/2.jpg" },
-    "3": { nombre: "EL BARRIL DEL FERCHO", logo: "logos/3.png", burger: "burgers/3.jpg" },
-    "4": { nombre: "SABOR GOURMET", logo: "logos/4.png", burger: "burgers/4.jpg" },
-    "5": { nombre: "JAVAR", logo: "logos/5.png", burger: "burgers/5.jpg" },
-    "6": { nombre: "CIELITO LINDO", logo: "logos/6.png", burger: "burgers/6.jpg" },
-    "7": { nombre: "CAFE GORRION", logo: "logos/7.png", burger: "burgers/7.jpg" }
+    "1": { nombre: "LA OBSESION", logo: "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=100", burger: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800" },
+    "2": { nombre: "MISTER HONGO", logo: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=100", burger: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=800" },
+    "3": { nombre: "EL BARRIL DEL FERCHO", logo: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=100", burger: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=800", campeon: true },
+    "4": { nombre: "SABOR GOURMET", logo: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=100", burger: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=800" },
+    "5": { nombre: "JAVAR", logo: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=100", burger: "https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=800" },
+    "6": { nombre: "CIELITO LINDO", logo: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=100", burger: "https://images.unsplash.com/photo-1607013251379-e6eecfffe234?w=800" },
+    "7": { nombre: "CAFE GORRION", logo: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=100", burger: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=800" }
 };
 
-// 3. DETECTAR RESTAURANTE DESDE LA URL (Si no hay, carga el 1)
 const urlParams = new URLSearchParams(window.location.search);
 let restID = urlParams.get('rest') || "1";
 if (!restaurantes[restID]) restID = "1";
-
 const datosRest = restaurantes[restID];
 
-// Inyectar datos en el HTML
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('rest-name').innerText = datosRest.nombre;
     document.getElementById('rest-logo').src = datosRest.logo;
     document.getElementById('burger-img').src = datosRest.burger;
+
+    if (datosRest.campeon) {
+        document.getElementById('champion-badge').style.display = 'inline-flex';
+        document.getElementById('rest-name').classList.add('champion-name');
+    }
 });
 
-// 4. LÓGICA DE INTERACCIÓN
 let ratingActual = 0;
 
-// Sonido sutil al interactuar
 function playSound() {
     const audio = document.getElementById('click-sound');
-    if (audio) {
-        audio.currentTime = 0;
-        audio.play().catch(e => console.log("Sonido bloqueado por el navegador"));
-    }
+    if(audio) audio.play();
 }
 
-// Convertir código a mayúsculas automáticamente mientras escriben
-document.getElementById('code').addEventListener('input', function() {
-    this.value = this.value.toUpperCase();
-});
-
-// 5. VALIDACIÓN DE INGRESO
 async function validarIngreso() {
     playSound();
     const code = document.getElementById('code').value.trim().toUpperCase();
     const phone = document.getElementById('phone').value.trim();
 
     if(phone.length < 7 || code.length < 6) {
-        alert("⚠️ Por favor ingresa un número de celular válido y el código de 6 dígitos.");
+        alert("⚠️ Ingresa celular y el código de 6 dígitos.");
         return;
     }
 
     try {
         const snapshot = await database.ref('codigos_validos/' + code).once('value');
-        const estado = snapshot.val();
-
-        if (estado === "disponible") {
-            // Transición suave entre secciones
-            document.getElementById('login-section').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('login-section').style.display = 'none';
-                document.getElementById('vote-section').style.display = 'block';
-                document.getElementById('vote-section').style.animation = 'fadeInUp 0.6s ease forwards';
-            }, 300);
-        } else if (estado === "usado") {
-            alert("❌ Este código ya fue utilizado anteriormente.");
+        if (snapshot.val() === "disponible") {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('vote-section').style.display = 'block';
         } else {
-            alert("❌ Código no válido. Revisa el ticket de compra.");
+            alert("❌ Código usado o inválido.");
         }
-    } catch (e) {
-        console.error(e);
-        alert("📡 Error de conexión. Revisa tu internet.");
-    }
+    } catch (e) { alert("📡 Error de conexión."); }
 }
 
-// 6. SISTEMA DE ESTRELLAS
 function setRating(n) {
     playSound();
     ratingActual = n;
     const stars = document.querySelectorAll('.stars span');
-    
     stars.forEach((s, i) => {
-        if (i < n) {
-            s.innerText = '★';
-            s.classList.add('active');
-        } else {
-            s.innerText = '★'; // Mantenemos el símbolo pero quitamos el color
-            s.classList.remove('active');
-        }
+        s.classList.toggle('active', i < n);
+        s.innerText = i < n ? '★' : '★';
     });
-
-    const mensajes = [
-        "¡Podría mejorar! 😅", 
-        "Está bien, pero le falta algo 🤔", 
-        "¡Muy rica! 👍", 
-        "¡Excelente hamburguesa! 🔥", 
-        "¡LA MEJOR QUE HE PROBADO! 🏆"
-    ];
-    
-    const label = document.getElementById('rating-label');
-    label.innerText = mensajes[n-1];
-    label.style.color = "var(--gold)";
-    label.style.fontWeight = "bold";
-
-    // Habilitar botón de enviar
+    document.getElementById('rating-label').innerText = ["Mala", "Regular", "Buena", "Muy Buena", "¡LA MEJOR!"][n-1];
     document.getElementById('btn-votar').disabled = false;
 }
 
-// 7. ENVÍO DEL VOTO FINAL
 function enviarVoto() {
     playSound();
     const phone = document.getElementById('phone').value.trim();
     const code = document.getElementById('code').value.trim().toUpperCase();
-    const btn = document.getElementById('btn-votar');
     
-    btn.disabled = true;
-    btn.innerText = "ENVIANDO...";
-
-    const updates = {};
-    // Guardar el voto organizado por restaurante
-    updates['/votos/' + restID + '/' + phone] = {
+    database.ref('votos/' + restID + '/' + phone).set({
         puntos: ratingActual,
         codigo: code,
-        fecha: new Date().toISOString()
-    };
-    // Marcar el código como quemado/usado
-    updates['/codigos_validos/' + code] = "usado";
-
-    database.ref().update(updates)
-        .then(() => {
-            alert("✅ ¡Voto registrado con éxito! Gracias por participar en el Burguer Fest.");
-            // Redirigir o recargar para que otro pueda votar
-            window.location.href = "https://juanariasn-cmyk.github.io/burguerfest2/";
-        })
-        .catch((error) => {
-            console.error(error);
-            alert("Hubo un error al guardar tu voto.");
-            btn.disabled = false;
-            btn.innerText = "ENVIAR MI CALIFICACIÓN";
-        });
+        fecha: new Date().toLocaleString()
+    }).then(() => {
+        database.ref('codigos_validos/' + code).set("usado");
+        alert("✅ ¡Voto registrado!");
+        location.reload();
+    });
 }
