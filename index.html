@@ -4,57 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Burguer Fest 2026 - Votación Oficial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
 <body>
-
+    <div class="bg-overlay"></div>
+    
     <div class="container">
         <header class="main-header">
-            <img src="Logo.png" alt="Burguer Fest Local" class="fest-logo">
-            <div class="divider"></div>
+            <img src="Logo.png" alt="Burguer Fest" class="fest-logo">
             <div class="rest-badge">
-                <img id="rest-logo" src="" alt="Logo" class="logo-min">
-                <h2 id="rest-name">Cargando...</h2>
+                <img id="rest-logo" src="" alt="Restaurante" class="logo-min">
+                <div class="text-info">
+                    <span class="label">RESTAURANTE PARTICIPANTE</span>
+                    <h2 id="rest-name">Cargando...</h2>
+                </div>
             </div>
         </header>
 
-        <hr class="separator">
+        <main class="main-card">
+            <div id="login-section">
+                <div class="icon-header">🔑</div>
+                <h3>¡Bienvenido al Fest!</h3>
+                <p class="subtitle">Ingresa tus datos para registrar tu calificación.</p>
+                
+                <div class="input-field">
+                    <label>Celular</label>
+                    <input type="tel" id="phone" placeholder="Ej: 3001234567" maxlength="10">
+                </div>
+                
+                <div class="input-field">
+                    <label>Código de Votación</label>
+                    <input type="text" id="code" placeholder="Código de 6 dígitos" maxlength="6">
+                </div>
+                
+                <button onclick="validarIngreso()" class="btn-primary">CONTINUAR</button>
+            </div>
 
-        <div id="login-section" class="card">
-            <h3>🔑 Ingresa tus datos</h3>
-            <p class="subtitle">Escribe tu celular y el código impreso en tu recibo para validar tu voto.</p>
-            <div class="input-group">
-                <label>Número de Celular</label>
-                <input type="tel" id="phone" placeholder="Ej: 3001234567" maxlength="10">
+            <div id="vote-section" style="display: none;">
+                <div class="icon-header">🍔</div>
+                <h3>¿Qué tal estuvo?</h3>
+                <p class="subtitle">Califica sabor, presentación y atención.</p>
+                
+                <div class="image-container">
+                    <img id="burger-img" src="" alt="Hamburguesa" class="burger-img">
+                </div>
+                
+                <div class="stars-container">
+                    <div class="stars" id="stars-row">
+                        <span onclick="setRating(1)">☆</span>
+                        <span onclick="setRating(2)">☆</span>
+                        <span onclick="setRating(3)">☆</span>
+                        <span onclick="setRating(4)">☆</span>
+                        <span onclick="setRating(5)">☆</span>
+                    </div>
+                    <p id="rating-text">Toca una estrella</p>
+                </div>
+                
+                <button id="btn-votar" onclick="enviarVoto()" class="btn-primary" disabled>CONFIRMAR MI VOTO</button>
             </div>
-            <div class="input-group">
-                <label>Código Único (6 caracteres)</label>
-                <input type="text" id="code" placeholder="Ingresa tu código" maxlength="6">
-            </div>
-            <button onclick="validarIngreso()" class="btn-main">CONTINUAR</button>
-        </div>
+        </main>
 
-        <div id="vote-section" class="card" style="display: none;">
-            <h3>🍔 Califica la Burger</h3>
-            <p class="subtitle">¿Qué te pareció la hamburguesa de este restaurante?</p>
-            
-            <div class="burger-wrapper">
-                <img id="burger-img" src="" alt="Hamburguesa" class="burger-photo">
-            </div>
-            
-            <div class="stars">
-                <span onclick="setRating(1)">☆</span>
-                <span onclick="setRating(2)">☆</span>
-                <span onclick="setRating(3)">☆</span>
-                <span onclick="setRating(4)">☆</span>
-                <span onclick="setRating(5)">☆</span>
-            </div>
-            <p id="rating-text">Selecciona una calificación</p>
-            
-            <button id="btn-votar" onclick="enviarVoto()" class="btn-main" disabled>ENVIAR MI VOTO</button>
-        </div>
+        <footer>
+            <p>Burguer Fest Local © 2026</p>
+        </footer>
     </div>
 
     <script src="script.js"></script>
