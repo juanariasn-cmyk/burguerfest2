@@ -2,9 +2,11 @@
     --gold: #E67E22;
     --gold-bright: #FFD700;
     --bg-black: #0A0A0B;
-    --glass: rgba(25, 25, 27, 0.9);
+    --glass: rgba(25, 25, 27, 0.95);
     --text-gray: #a0a0a0;
 }
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
     background-color: var(--bg-black);
@@ -14,50 +16,57 @@ body {
     overflow-x: hidden;
 }
 
+.progress-container { width: 100%; height: 4px; background: #222; position: fixed; top: 0; left: 0; z-index: 1000; }
+.progress-bar { height: 4px; background: var(--gold); width: 0%; transition: 0.4s; box-shadow: 0 0 10px var(--gold); }
+
 .main-wrapper {
     min-height: 100vh;
     background: radial-gradient(circle at 50% -20%, #2c1a0a 0%, #0a0a0b 80%);
+    padding-top: 20px;
 }
 
-.container { max-width: 450px; margin: 0 auto; padding: 20px; }
+.container { max-width: 450px; margin: 0 auto; padding: 20px; text-align: center; }
 
-.main-logo-img { width: 160px; margin-bottom: 10px; }
+.main-logo-img { width: 140px; margin-bottom: 10px; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8)); }
 
-.status-bar { font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: 800; margin-bottom: 20px; }
-.live-dot { display: inline-block; width: 8px; height: 8px; background: red; border-radius: 50%; margin-right: 5px; animation: pulse 1.5s infinite; }
+.status-bar { font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: 800; margin-top: 10px; }
+.live-dot { display: inline-block; width: 8px; height: 8px; background: #ff0000; border-radius: 50%; margin-right: 5px; animation: pulse 1.5s infinite; }
 
 .glass-card {
     background: var(--glass);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 30px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 35px;
     padding: 30px 20px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    margin-top: 20px;
 }
 
-.rest-context { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 15px; }
-.mini-avatar { width: 50px; height: 50px; border-radius: 10px; border: 2px solid var(--gold); object-fit: cover; }
-.voter-label { font-size: 9px; color: var(--text-gray); display: block; }
-h2#rest-name { margin: 0; font-size: 18px; color: #fff; }
+.rest-context { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+.mini-avatar { width: 55px; height: 55px; border-radius: 12px; border: 2px solid var(--gold); object-fit: cover; }
+.voter-label { font-size: 10px; color: var(--gold); font-weight: 800; display: block; text-align: left; }
+h2#rest-name { margin: 0; font-size: 19px; color: #fff; text-align: left; }
 
-.champion-badge { background: linear-gradient(135deg, #FFD700, #B8860B); color: #000; padding: 5px 15px; border-radius: 20px; font-weight: 800; font-size: 11px; margin-bottom: 10px; animation: goldPulse 2s infinite; }
-.champion-name { color: var(--gold-bright) !important; }
+.input-field { position: relative; margin-bottom: 25px; }
+.input-field input { width: 100%; padding: 18px; background: #111; border: 1px solid #333; border-radius: 15px; color: #fff; font-size: 16px; box-sizing: border-box; transition: 0.3s; }
+.input-field input:focus { border-color: var(--gold); box-shadow: 0 0 15px rgba(230, 126, 34, 0.2); }
+.input-field label { position: absolute; left: 18px; top: 18px; color: #666; transition: 0.3s; pointer-events: none; }
+.input-field input:focus ~ label, .input-field input:not(:placeholder-shown) ~ label { top: -10px; font-size: 11px; color: var(--gold); background: var(--bg-black); padding: 0 8px; font-weight: bold; }
 
-.input-field { position: relative; margin-bottom: 20px; }
-.input-field input { width: 100%; padding: 15px; background: #1a1a1a; border: 1px solid #333; border-radius: 12px; color: #fff; font-size: 16px; box-sizing: border-box; }
-.input-field label { position: absolute; left: 15px; top: 15px; color: #666; transition: 0.3s; pointer-events: none; }
-.input-field input:focus ~ label, .input-field input:not(:placeholder-shown) ~ label { top: -10px; font-size: 11px; color: var(--gold); background: var(--bg-black); padding: 0 5px; }
-
-.btn-shine { width: 100%; padding: 18px; background: var(--gold); border: none; border-radius: 15px; color: #fff; font-weight: 800; cursor: pointer; transition: 0.3s; }
+.btn-shine { width: 100%; padding: 20px; background: var(--gold); border: none; border-radius: 18px; color: #fff; font-weight: 800; font-size: 15px; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
 .btn-shine.gold { background: linear-gradient(135deg, var(--gold), #d35400); }
-.btn-shine:disabled { filter: grayscale(1); opacity: 0.5; }
+.btn-shine:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(230, 126, 34, 0.4); }
+.btn-shine:disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(1); }
 
-.image-frame { width: 100%; height: 200px; border-radius: 20px; overflow: hidden; margin-bottom: 20px; }
+.image-frame { width: 100%; height: 210px; border-radius: 25px; overflow: hidden; margin-bottom: 25px; border: 2px solid rgba(255,255,255,0.05); }
 .hero-burger { width: 100%; height: 100%; object-fit: cover; }
 
-.stars { font-size: 45px; display: flex; justify-content: center; gap: 10px; margin: 15px 0; cursor: pointer; }
-.stars span { color: #333; transition: 0.3s; }
-.stars span.active { color: var(--gold-bright); text-shadow: 0 0 15px var(--gold); }
+.stars { font-size: 48px; display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
+.stars span { color: #222; transition: 0.3s; cursor: pointer; }
+.stars span.active { color: var(--gold-bright); text-shadow: 0 0 20px var(--gold); transform: scale(1.1); }
 
-@keyframes goldPulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+.champion-badge { background: linear-gradient(135deg, #FFD700, #B8860B); color: #000; padding: 6px 18px; border-radius: 30px; font-weight: 800; font-size: 11px; margin-top: 10px; animation: goldPulse 2s infinite; display: inline-flex; align-items: center; gap: 8px; }
+.champion-name { color: var(--gold-bright) !important; text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes goldPulse { 0% { box-shadow: 0 0 5px #FFD700; } 50% { box-shadow: 0 0 20px #FFD700; } 100% { box-shadow: 0 0 5px #FFD700; } }
