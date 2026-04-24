@@ -3,77 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Burguer Fest 2026 - Jurado Oficial</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Burguer Fest 2026 - Jurado VIP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
     <audio id="click-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
 
     <div class="main-wrapper">
         <div class="glow-spot"></div>
+        <div class="glow-spot-2"></div>
         
         <div class="container">
-            <div class="progress-container">
-                <div class="progress-bar" id="myBar"></div>
-            </div>
+            <div class="progress-container"><div class="progress-bar" id="myBar"></div></div>
 
             <header class="hero-header">
-                <div class="logo-container">
+                <div class="logo-wrapper">
                     <img src="Logo.png" alt="Burguer Fest" class="main-logo-img" onerror="this.src='https://via.placeholder.com/150?text=Burguer+Fest'">
                 </div>
                 <div id="champion-badge" class="champion-badge" style="display: none;">
-                    <span class="crown">👑</span>
-                    <span class="badge-text">ACTUAL CAMPEÓN</span>
-                </div>
-                <div class="status-bar">
-                    <span class="live-dot"></span> JURADO EN VIVO
+                    <span class="crown">👑</span> <span class="badge-text">DEFENDIENDO EL TÍTULO</span>
                 </div>
             </header>
 
             <section class="glass-card" id="main-card">
-                <div class="rest-context">
-                    <img id="rest-logo" src="" alt="Restaurante" class="mini-avatar" onerror="this.src='Logo.png'">
+                <div class="rest-context-premium">
+                    <div class="avatar-container">
+                        <img id="rest-logo" src="" alt="Rest" class="mini-avatar" onerror="this.src='Logo.png'">
+                    </div>
                     <div class="name-box">
-                        <span class="voter-label">ESTÁS CALIFICANDO A:</span>
+                        <span class="voter-label">JURADO OFICIAL</span>
                         <h2 id="rest-name">Cargando...</h2>
                     </div>
                 </div>
 
-                <div id="login-section">
+                <div id="login-section" class="fade-in">
                     <div class="welcome-text">
-                        <h3>¡Hola, Foodie!</h3>
-                        <p>Ingresa los datos de tu ticket para continuar.</p>
+                        <h3>Pase de Votación</h3>
+                        <p>Valida tu ticket para calificar esta experiencia.</p>
                     </div>
 
                     <div class="input-wrapper">
-                        <div class="input-field">
-                            <input type="tel" id="phone" required placeholder=" " oninput="updateProgress(25)">
-                            <label>Celular / WhatsApp</label>
-                            <span class="focus-border"></span>
+                        <div class="floating-input">
+                            <input type="tel" id="phone" required placeholder=" " oninput="updateProgress(30)">
+                            <label>Tu WhatsApp</label>
                         </div>
-                        <div class="input-field">
-                            <input type="text" id="code" required maxlength="6" placeholder=" " oninput="this.value = this.value.toUpperCase(); updateProgress(50)">
-                            <label>Código de 6 dígitos</label>
-                            <span class="focus-border"></span>
+                        <div class="floating-input">
+                            <input type="text" id="code" required maxlength="6" placeholder=" " oninput="this.value = this.value.toUpperCase(); updateProgress(60)">
+                            <label>Código del Ticket</label>
                         </div>
                     </div>
 
-                    <button onclick="validarIngreso()" class="btn-shine">
-                        <span>SIGUIENTE PASO</span>
+                    <button onclick="validarIngreso()" class="btn-premium">
+                        <span>CONTINUAR</span>
+                        <div class="btn-glare"></div>
                     </button>
                 </div>
 
-                <div id="vote-section" style="display: none;">
-                    <div class="image-frame">
-                        <img id="burger-img" src="" alt="Hamburguesa" class="hero-burger">
-                        <div class="img-overlay"></div>
+                <div id="vote-section" style="display: none;" class="fade-in">
+                    <div class="burger-display">
+                        <img id="burger-img" src="" alt="Burger" class="hero-burger">
+                        <div class="burger-tag">SABOR A PRUEBA</div>
                     </div>
 
                     <div class="rating-engine">
-                        <p class="rating-hint">¿Qué tal estuvo el sabor?</p>
                         <div class="stars" id="star-box">
                             <span onclick="setRating(1)">★</span>
                             <span onclick="setRating(2)">★</span>
@@ -81,17 +77,17 @@
                             <span onclick="setRating(4)">★</span>
                             <span onclick="setRating(5)">★</span>
                         </div>
-                        <div id="rating-label">Toca una estrella</div>
+                        <p id="rating-label">¿Cuántas estrellas merece?</p>
                     </div>
 
-                    <button id="btn-votar" onclick="enviarVoto()" class="btn-shine gold" disabled>
-                        <span>FINALIZAR Y COMPARTIR</span>
+                    <button id="btn-votar" onclick="enviarVoto()" class="btn-premium gold" disabled>
+                        <span>ENVIAR MI VERDICTO</span>
                     </button>
                 </div>
             </section>
 
-            <footer class="legal-footer">
-                <p>Verificado por Burguer Fest Local © 2026</p>
+            <footer class="footer-minimal">
+                <p>Burguer Fest Local 2026 • Selección Oficial</p>
             </footer>
         </div>
     </div>
