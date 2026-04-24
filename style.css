@@ -1,12 +1,10 @@
 :root {
     --gold: #E67E22;
-    --gold-bright: #FFD700;
-    --bg-black: #0A0A0B;
-    --glass: rgba(25, 25, 27, 0.95);
-    --text-gray: #a0a0a0;
+    --gold-deep: #D35400;
+    --gold-glow: rgba(230, 126, 34, 0.5);
+    --bg-black: #080809;
+    --glass: rgba(20, 20, 22, 0.96);
 }
-
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
     background-color: var(--bg-black);
@@ -14,59 +12,90 @@ body {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
-.progress-container { width: 100%; height: 4px; background: #222; position: fixed; top: 0; left: 0; z-index: 1000; }
-.progress-bar { height: 4px; background: var(--gold); width: 0%; transition: 0.4s; box-shadow: 0 0 10px var(--gold); }
-
-.main-wrapper {
-    min-height: 100vh;
-    background: radial-gradient(circle at 50% -20%, #2c1a0a 0%, #0a0a0b 80%);
-    padding-top: 20px;
+/* Puntos de luz dinámicos */
+.glow-spot {
+    position: fixed; top: -15%; right: -10%; width: 400px; height: 400px;
+    background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+    z-index: -1;
+}
+.glow-spot-2 {
+    position: fixed; bottom: -10%; left: -10%; width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    z-index: -1;
 }
 
-.container { max-width: 450px; margin: 0 auto; padding: 20px; text-align: center; }
+.container { max-width: 420px; margin: 0 auto; padding: 25px 15px; }
 
-.main-logo-img { width: 140px; margin-bottom: 10px; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8)); }
-
-.status-bar { font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: 800; margin-top: 10px; }
-.live-dot { display: inline-block; width: 8px; height: 8px; background: #ff0000; border-radius: 50%; margin-right: 5px; animation: pulse 1.5s infinite; }
-
+/* Tarjeta Premium */
 .glass-card {
     background: var(--glass);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 35px;
-    padding: 30px 20px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
-    margin-top: 20px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 40px;
+    padding: 35px 25px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+    backdrop-filter: blur(30px);
 }
 
-.rest-context { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
-.mini-avatar { width: 55px; height: 55px; border-radius: 12px; border: 2px solid var(--gold); object-fit: cover; }
-.voter-label { font-size: 10px; color: var(--gold); font-weight: 800; display: block; text-align: left; }
-h2#rest-name { margin: 0; font-size: 19px; color: #fff; text-align: left; }
+/* Avatar Restaurante */
+.rest-context-premium {
+    display: flex; align-items: center; gap: 15px;
+    margin-bottom: 30px; text-align: left;
+}
+.avatar-container {
+    position: relative; padding: 3px;
+    background: linear-gradient(135deg, var(--gold), transparent);
+    border-radius: 18px;
+}
+.mini-avatar { width: 60px; height: 60px; border-radius: 15px; object-fit: cover; background: #000; }
 
-.input-field { position: relative; margin-bottom: 25px; }
-.input-field input { width: 100%; padding: 18px; background: #111; border: 1px solid #333; border-radius: 15px; color: #fff; font-size: 16px; box-sizing: border-box; transition: 0.3s; }
-.input-field input:focus { border-color: var(--gold); box-shadow: 0 0 15px rgba(230, 126, 34, 0.2); }
-.input-field label { position: absolute; left: 18px; top: 18px; color: #666; transition: 0.3s; pointer-events: none; }
-.input-field input:focus ~ label, .input-field input:not(:placeholder-shown) ~ label { top: -10px; font-size: 11px; color: var(--gold); background: var(--bg-black); padding: 0 8px; font-weight: bold; }
+.voter-label { font-size: 9px; font-weight: 800; color: var(--gold); letter-spacing: 2px; }
+h2#rest-name { margin: 2px 0 0; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
 
-.btn-shine { width: 100%; padding: 20px; background: var(--gold); border: none; border-radius: 18px; color: #fff; font-weight: 800; font-size: 15px; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-.btn-shine.gold { background: linear-gradient(135deg, var(--gold), #d35400); }
-.btn-shine:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(230, 126, 34, 0.4); }
-.btn-shine:disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(1); }
+/* Inputs Flotantes Modernos */
+.floating-input { position: relative; margin-bottom: 20px; }
+.floating-input input {
+    width: 100%; padding: 20px; background: #121214; border: 1px solid #222;
+    border-radius: 20px; color: #fff; font-size: 16px; transition: 0.3s;
+}
+.floating-input input:focus { border-color: var(--gold); background: #18181b; outline: none; }
+.floating-input label {
+    position: absolute; left: 20px; top: 20px; color: #555;
+    transition: 0.3s; pointer-events: none;
+}
+.floating-input input:focus ~ label, 
+.floating-input input:not(:placeholder-shown) ~ label {
+    top: -10px; left: 15px; font-size: 11px; color: var(--gold); background: var(--bg-black); padding: 0 8px; font-weight: 700;
+}
 
-.image-frame { width: 100%; height: 210px; border-radius: 25px; overflow: hidden; margin-bottom: 25px; border: 2px solid rgba(255,255,255,0.05); }
-.hero-burger { width: 100%; height: 100%; object-fit: cover; }
+/* Botón Premium con Brillo */
+.btn-premium {
+    position: relative; width: 100%; padding: 22px;
+    background: #fff; color: #000; border: none; border-radius: 22px;
+    font-weight: 800; font-size: 14px; letter-spacing: 1px;
+    cursor: pointer; overflow: hidden; transition: 0.4s;
+}
+.btn-premium.gold { background: var(--gold); color: #fff; }
+.btn-glare {
+    position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
+}
+.btn-premium:hover .btn-glare { left: 100%; transition: 0.6s; }
 
-.stars { font-size: 48px; display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
-.stars span { color: #222; transition: 0.3s; cursor: pointer; }
-.stars span.active { color: var(--gold-bright); text-shadow: 0 0 20px var(--gold); transform: scale(1.1); }
+/* Burger Display */
+.burger-display { position: relative; border-radius: 30px; overflow: hidden; margin-bottom: 25px; height: 220px; }
+.hero-burger { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+.burger-tag {
+    position: absolute; bottom: 15px; left: 15px; background: var(--gold);
+    color: #fff; padding: 5px 12px; border-radius: 10px; font-size: 10px; font-weight: 800;
+}
 
-.champion-badge { background: linear-gradient(135deg, #FFD700, #B8860B); color: #000; padding: 6px 18px; border-radius: 30px; font-weight: 800; font-size: 11px; margin-top: 10px; animation: goldPulse 2s infinite; display: inline-flex; align-items: center; gap: 8px; }
-.champion-name { color: var(--gold-bright) !important; text-shadow: 0 0 10px rgba(255,215,0,0.3); }
-
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-@keyframes goldPulse { 0% { box-shadow: 0 0 5px #FFD700; } 50% { box-shadow: 0 0 20px #FFD700; } 100% { box-shadow: 0 0 5px #FFD700; } }
+/* Animaciones */
+.fade-in { animation: fadeInUp 0.6s ease-out forwards; }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
